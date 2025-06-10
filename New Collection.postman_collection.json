@@ -1,0 +1,607 @@
+{
+	"info": {
+		"_postman_id": "53939a74-d311-4739-8baa-d10af87c1ff9",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "34686799"
+	},
+	"item": [
+		{
+			"name": "logowanie_rejestracja",
+			"item": [
+				{
+					"name": "Registeruser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"createdUserName\", pm.response.json()?.username);\r",
+									"pm.collectionVariables.set(\"createdUserId\", pm.response.json()?.id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"username\": \"testuser1122\",\r\n        \"email\": \"test@example.com\",\r\n        \"password\": \"testpass123\",\r\n        \"password2\": \"testpass123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:8000/register/"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "refreshtoken",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "adminLogin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"token\", pm.response.json()?.access);\r",
+									"pm.collectionVariables.set(\"refreshToken\", pm.response.json()?.refresh);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:8000/api/token/"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "posts",
+			"item": [
+				{
+					"name": "addPost",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "updatePost",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "deletePost",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getPost",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "addingCatchToPost",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"catches\": {{createdCatch}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:8000/api/posts_app/{{createdPostId}}/"
+					},
+					"response": []
+				},
+				{
+					"name": "addphoto",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/wikto/Desktop/Zrzut ekranu 2025-05-19 201342.png"
+								},
+								{
+									"key": "title",
+									"value": "\"tytul\"",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "\"content\"",
+									"type": "text"
+								}
+							]
+						},
+						"url": "127.0.0.1:8000/api/posts_app/{{createdPostId}}/"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "catches",
+			"item": [
+				{
+					"name": "addCatch",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "updateCatch",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"spot\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:8000/api/catches/{{createdCatch}}/"
+					},
+					"response": []
+				},
+				{
+					"name": "getCatch",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCatch",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getCatches",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "komentarze",
+			"item": [
+				{
+					"name": "addCommentForPost",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"addedComment\", pm.response.json()?.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"Super ryba!\",\r\n    \"post\": {{createdPostId}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:8000/api/comments/"
+					},
+					"response": []
+				},
+				{
+					"name": "updateComment",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "deleteComment",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "profile",
+			"item": [
+				{
+					"name": "getProfiles",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getProfile",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "updateProfile",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "locations",
+			"item": [
+				{
+					"name": "getLocations",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getLocation",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "addLocations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"createdLocationId\", pm.response.json().id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Nowy Spot\",\r\n    \"location\": \"ulica Wesoła 04\\n51-248 Białogard\",\r\n    \"description\": \"Czyjś gdy mi w końcu iść postać październik bardzo. Pierwiastek Chemiczny gwałtowny przed nóż wizyta. Po Prostu zdolny gospodarczy powoli pustynia.\\nKsiążka korzyść obóz pieniądze zrozumieć w ogół.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:8000/api/spots/"
+					},
+					"response": []
+				},
+				{
+					"name": "updateLocation",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 22,\r\n    \"name\": \"Nowy Spot\",\r\n    \"location\": \"ulica Wesoła 04\\n51-248 Białogard\",\r\n    \"description\": \"Super kladka\",\r\n    \"author\": 39\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:8000/api/spots/{{createdLocationId}}/"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "gatunkiAdmin",
+			"item": [
+				{
+					"name": "getSpecies",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "postSpecies",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "updateSpecies",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "deleteSpecie",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "graphQL",
+			"item": [
+				{
+					"name": "getPosts",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "{\r\n  query:  allPosts { id title content author { username} } \r\n}",
+								"variables": ""
+							}
+						},
+						"url": "127.0.0.1:8000/graphql/"
+					},
+					"response": []
+				},
+				{
+					"name": "getPostsByAuthorUsername",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "addPost",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"query\": \"mutation { createPost(title: \\\"Tytuł\\\", content: \\\"Treść\\\") { post { id title content author { id username } } } }\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:8000/graphql/"
+					},
+					"response": []
+				},
+				{
+					"name": "updatePost",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"query\": \"mutation { updatePost( id: \\\"1\\\" title: \\\"Tytuł nowy\\\", content: \\\"Treść\\\") { post { id title content author { username } } } }\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:8000/graphql/"
+					},
+					"response": []
+				},
+				{
+					"name": "getPostsByAuthorID",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "{\r\n  query: postsByUserId(userId: 1) { id title content author {id username} } \r\n}",
+								"variables": ""
+							}
+						},
+						"url": "127.0.0.1:8000/graphql/"
+					},
+					"response": []
+				},
+				{
+					"name": "getPostByID",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "catchStats",
+			"item": [
+				{
+					"name": "polowy",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}"
+						},
+						"url": "127.0.0.1:8000/api/user-activity-logs/"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "{{token}}"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token\n",
+			"value": " ",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "createdUserName",
+			"value": ""
+		},
+		{
+			"key": "createdPostId",
+			"value": ""
+		},
+		{
+			"key": "refreshToken",
+			"value": ""
+		},
+		{
+			"key": "addedComment",
+			"value": ""
+		},
+		{
+			"key": "createdCatch",
+			"value": ""
+		},
+		{
+			"key": "createdUserId",
+			"value": ""
+		},
+		{
+			"key": "createdLocationId",
+			"value": ""
+		}
+	]
+}
