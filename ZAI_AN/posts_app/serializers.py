@@ -4,9 +4,13 @@ from .schema import User
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    author = serializers.PrimaryKeyRelatedField(read_only=True)    
     class Meta:
         model = Comment
         fields = '__all__'
+        read_only_fields = ('author',)        
+    
+   
 
 class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
@@ -25,7 +29,7 @@ class CookingSpotSerializer(serializers.ModelSerializer):
         model = CookingSpot
         fields = '__all__'
 class DishSerializer(serializers.ModelSerializer):
-    spotSerializer = CookingSpotSerializer(source='spot', read_only=True)
+    spot_details = CookingSpotSerializer(source='spot', read_only=True)
     class Meta:
         model = Dish
         fields = '__all__'
@@ -69,3 +73,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         
         Profile.objects.create(id=user.id, user=user)
         return user
+    
+class DishTypeAggregationSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField()
+    avg_weight = serializers.FloatField()    

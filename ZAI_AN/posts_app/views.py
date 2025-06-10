@@ -2,14 +2,16 @@ from rest_framework import viewsets, generics
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from .models import Post, Comment, DishType, CookingSpot, Dish, Profile, User
 from .permissions import IsAuthorOrReadOnly, IsAdminOrReadOnly, IsProfileAuthorOrReadOnly
 from .serializers import (
     PostSerializer, CommentSerializer, DishTypeSerializer,
-    CookingSpotSerializer, DishSerializer, ProfileSerializer, UserRegisterSerializer
+    CookingSpotSerializer, DishSerializer, ProfileSerializer, UserRegisterSerializer, DishTypeAggregationSerializer
 )
 from django.http import JsonResponse
+from django.db.models import Avg, Count
 
 
 class APIRootView(APIView):
@@ -22,7 +24,7 @@ class APIRootView(APIView):
         return JsonResponse({
             'posts': reverse('post-list', request=request, format=format),
             'comments': reverse('comment-list', request=request, format=format),
-            'species': reverse('species-list', request=request, format=format),
+            'dish-type': reverse('dish-type', request=request, format=format),
             'spots': reverse('spot-list', request=request, format=format),
             'Dishes': reverse('Dish-list', request=request, format=format),
             'profiles': reverse('profile-list', request=request, format=format),
@@ -82,3 +84,35 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
+class DishTypeAggregationView(generics.ListAPIView):
+    serializer_class = DishTypeAggregationSerializer
+
+    def get_queryset(self):
+        return DishType.objects.annotate(avg_weight=Avg('dish__weight')).values('id', 'name', 'avg_weight')
+
+class CookingSpotStatsView(APIView):
+    """
+    View showing statistics for cooking spots:
+    - Number of dishes prepared
+    - Average weight of dishes
+    - Most common cooking method
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        spots_stats = CookingSpot.objects.annotate(
+            dishes_count=Count('dish'),
+            avg_dish_weight=Avg('dish__weight'),
+            total_authors=Count('dish__author', distinct=True)
+        ).values(
+            'id',
+            'name',
+            'location',
+            'dishes_count',
+            'avg_dish_weight',
+            'total_authors'
+        )
+
+        return Response(spots_stats)    

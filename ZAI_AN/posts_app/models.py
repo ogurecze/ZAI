@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 # Choices
 COOKING_METHOD = [
     ('Prodziż', 'Pieczone'),
-    ('Smarzone', 'Gotowane'),
+    ('Smażone', 'Gotowane'),
     ('Parzone', 'Surowe'),
 ]
 
@@ -89,7 +89,11 @@ class Dish(models.Model):
     spot = models.ForeignKey(CookingSpot, on_delete=models.SET_NULL, null=True)
     weight = models.DecimalField(max_digits=5, decimal_places=2)
     date = models.DateField()
-    photo = models.ImageField(upload_to='Dishes/', blank=True)
+    posts = models.ManyToManyField(
+        Post,  # Relacja Dish -> Post, jedno danie może być w wielu postach
+        related_name='posts',  # Zmieniamy related_name na 'posts'
+        blank=True  # Nie jest wymagane posiadanie postów
+    )
 
     class Meta:
         ordering = ['-date']
